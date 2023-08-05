@@ -68,12 +68,14 @@ function Login() {
         </BaseText>
         <TextInput
         label={"Email address"}
+        style={"text-white"}
         type="email"
         onChangeText={handleChange('email')}
         error={touched.email ? errors.email : undefined}
         />
         <TextInput
         label={"Password"}
+        style={"text-white"}
         type="password"
         onChangeText={handleChange('password')}
         error={touched.password ? errors.password : undefined}

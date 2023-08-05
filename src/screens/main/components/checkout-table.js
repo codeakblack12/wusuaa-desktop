@@ -12,6 +12,23 @@ import { getRequest } from '../../../server';
 import { firstLetterUppercase, formatMoney } from '../../../utils/functions';
 import { SocketContext } from '../../../context/socket';
 import PayMethod from '../../../components/modals/pay-method';
+import { render, Printer, Text } from 'react-thermal-printer';
+
+// const {PosPrinter} = require('@electron/remote/main/index')
+// import { IpcRenderer } from 'electron'
+
+// import {ThermalPrinter } from "node-thermal-printer"
+
+// const {PosPrinter} = require('electron').remote.require("electron-pos-printer");
+// const {IpcRenderer} = require("electron")
+// import { IpcRenderer } from 'electron'
+// import PosPrinter from "electron-pos-printer"
+
+const data_ = await render(
+  <Printer type="epson">
+    <Text>Hello World</Text>
+  </Printer>
+);
 
 function CheckoutTable() {
 
@@ -20,6 +37,8 @@ function CheckoutTable() {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(false)
   const [pay, setPay] = useState(false)
+  const [email, setEmail] = useState("")
+
 
   const dispatch = useAppDispatch()
 
@@ -31,6 +50,7 @@ function CheckoutTable() {
 
   useEffect(() => {
     socket.on(`CHECKOUT-${selected_cart}`, (payload) => {
+      setPay(false)
       setData(payload)
     })
 
@@ -39,6 +59,19 @@ function CheckoutTable() {
     };
 
   }, [socket, selected_cart])
+
+  const onPrintReceipt = async () => {
+    try {
+      console.log(data_)
+      await window.navigator.serial.requestPort();
+      console.log( await navigator.serial.getPorts() );
+      // const port = await window.navigator.serial.requestPort();
+      // const ports = await window.navigator.serial.getPorts();
+      // await port.open({ baudRate: 9600 });
+    } catch (error) {
+      alert(error)
+    }
+  }
 
   const getCheckout = async (cart) => {
     try {
@@ -140,14 +173,17 @@ function CheckoutTable() {
           disabled={loading || data?.subtotal < 1 || !data?.items?.length}
           onClick={() => setPay(true)}
           />}
-          {data?.confirmed && <BaseButton
+          {!data?.confirmed && <BaseButton
           // textColor={"button"}
-          title="Generate Receipt"
+          title="Print Receipt"
           style="w-full"
           // style="w-full bg-white border border-black"
           loading={loading}
           disabled={loading || data?.subtotal < 1}
-          onClick={() => alert("Feature currently unavailable")}
+          onClick={async () => {
+            onPrintReceipt()
+            // alert("Feature currently unavailable")
+          }}
           />}
         </div>
 
