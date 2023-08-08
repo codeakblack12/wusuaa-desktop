@@ -1,5 +1,5 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, protocol } = require("electron");
+const { app, BrowserWindow, protocol, ipcMain } = require("electron");
 // const {PosPrinter} = require('@electron/remote').remote.require("electron-pos-printer");
 const {PosPrinter} = require("electron-pos-printer");
 const path = require("path");
@@ -15,9 +15,8 @@ function createWindow() {
     // Set the path of an additional "preload" script that can be used to
     // communicate between node-land and browser-land.
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
       preload: path.join(__dirname, "preload.js"),
+      nodeIntegration: true
     },
   });
 
@@ -93,14 +92,15 @@ app.on("web-contents-created", (event, contents) => {
   });
 });
 
-// ipcMain.on('print', (event, arg) => {
-//   const data = JSON.parse(arg)
+// ipcMain.on('pos_print', (event, arg) => {
+//   alert("Person No")
+//   // const data = JSON.parse(arg)
 
-//   PosPrinter.print(data, {
-//     printerName: 'Xprinter USB Printer P',
-//     silent: true,
-//     preview: true
-//   }).catch(error => console.log(error))
+//   // PosPrinter.print(data, {
+//   //   printerName: 'Xprinter USB Printer P',
+//   //   silent: true,
+//   //   preview: true
+//   // }).catch(error => console.log(error))
 // })
 
 // In this file you can include the rest of your app's specific main process

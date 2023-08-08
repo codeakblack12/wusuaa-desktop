@@ -62,12 +62,25 @@ function CheckoutTable() {
 
   const onPrintReceipt = async () => {
     try {
-      console.log(data_)
-      await window.navigator.serial.requestPort();
-      console.log( await navigator.serial.getPorts() );
-      // const port = await window.navigator.serial.requestPort();
-      // const ports = await window.navigator.serial.getPorts();
-      // await port.open({ baudRate: 9600 });
+      const data = [
+      {
+          type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+          value: 'SAMPLE HEADING',
+          style: {fontWeight: "700", textAlign: 'center', fontSize: "24px"}
+      },{
+          type: 'text',                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
+          value: 'Secondary text',
+          style: {textDecoration: "underline", fontSize: "10px", textAlign: "center", color: "red"}
+      },{
+          type: 'barCode',
+          value: '023456789010',
+          height: 40,                     // height of barcode, applicable only to bar and QR codes
+          width: 2,                       // width of barcode, applicable only to bar and QR codes
+          displayValue: true,             // Display value below barcode
+          fontsize: 12,
+      }
+      ]
+      await window.print_receipt(data)
     } catch (error) {
       alert(error)
     }
