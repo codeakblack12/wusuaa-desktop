@@ -14,8 +14,8 @@ const initialState = {
 
 export const getCarts = createAsyncThunk(
     'cart/get',
-    async () =>{
-        const response = await getRequest('sales/handler-carts')
+    async (payload) =>{
+        const response = await getRequest(`sales/handler-carts/${payload}`)
         return response.data
     }
 )

@@ -16,7 +16,7 @@ export default function AddToggle({onClick}) {
 
   const { loading, cart_keys } = useAppSelector(cartState)
 
-  const { userData } = useAppSelector(userState)
+  const { userData, counter, active_warehouse } = useAppSelector(userState)
 
   const { socket } = useContext(SocketContext);
 
@@ -34,7 +34,8 @@ export default function AddToggle({onClick}) {
         console.log("Help")
         await dispatch(createCart({}))
         await socket.emit('create_cart', {
-            counter: process.env.REACT_APP_COUNTER
+            counter: counter,
+            warehouse: active_warehouse
         })
 
         setTimeout(() => {

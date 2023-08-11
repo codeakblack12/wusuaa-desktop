@@ -9,13 +9,14 @@ import AddToggle from './add-toggle';
 import { selectCart } from '../../../redux/slices/cartSlice';
 import BaseButton from '../../../components/common/button';
 import { getRequest } from '../../../server';
-import { firstLetterUppercase, formatMoney } from '../../../utils/functions';
+import { firstLetterUppercase, formatMoney, generateReceipt } from '../../../utils/functions';
 import { SocketContext } from '../../../context/socket';
 import PayMethod from '../../../components/modals/pay-method';
 import { render, Printer, Text } from 'react-thermal-printer';
+import { userState } from '../../../redux/slices/userSlice';
+// import { IpcRenderer } from 'electron'
 
 // const {PosPrinter} = require('@electron/remote/main/index')
-// import { IpcRenderer } from 'electron'
 
 // import {ThermalPrinter } from "node-thermal-printer"
 
@@ -33,6 +34,7 @@ const data_ = await render(
 function CheckoutTable() {
 
   const { socket } = useContext(SocketContext)
+  const { userData } = useAppSelector(userState)
 
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -61,28 +63,21 @@ function CheckoutTable() {
   }, [socket, selected_cart])
 
   const onPrintReceipt = async () => {
+    // alert(JSON.stringify(data))
+    // return
     try {
-      const data = [
-      {
-          type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
-          value: 'SAMPLE HEADING',
-          style: {fontWeight: "700", textAlign: 'center', fontSize: "24px"}
-      },{
-          type: 'text',                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
-          value: 'Secondary text',
-          style: {textDecoration: "underline", fontSize: "10px", textAlign: "center", color: "red"}
-      },{
-          type: 'barCode',
-          value: '023456789010',
-          height: 40,                     // height of barcode, applicable only to bar and QR codes
-          width: 2,                       // width of barcode, applicable only to bar and QR codes
-          displayValue: true,             // Display value below barcode
-          fontsize: 12,
-      }
-      ]
-      await window.print_receipt(data)
+      setLoading(true)
+      const receipt = await generateReceipt({
+        ...data,
+        cashier: `${userData.firstName} ${userData.lastName}`
+      })
+      await window.print_receipt(receipt)
+      setTimeout(() => {
+        setLoading(false)
+      }, 3000)
     } catch (error) {
       alert(error)
+      setLoading(false)
     }
   }
 
@@ -186,7 +181,7 @@ function CheckoutTable() {
           disabled={loading || data?.subtotal < 1 || !data?.items?.length}
           onClick={() => setPay(true)}
           />}
-          {!data?.confirmed && <BaseButton
+          {data?.confirmed && <BaseButton
           // textColor={"button"}
           title="Print Receipt"
           style="w-full"

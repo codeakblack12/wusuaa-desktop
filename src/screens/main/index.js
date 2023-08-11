@@ -11,11 +11,14 @@ function Dashboard() {
 
   const { socket } = useContext(SocketContext);
 
-  const { userData } = useAppSelector(userState)
+  const { userData, active_warehouse } = useAppSelector(userState)
 
   useEffect(() => {
     initialize()
   }, [])
+  useEffect(() => {
+    initializeCarts()
+  }, [active_warehouse])
 
   useEffect(() => {
     socket.on(userData._id, (payload) => {
@@ -36,8 +39,12 @@ function Dashboard() {
 
   const initialize = async () => {
     await dispatch(getMe())
-    await dispatch(getCarts())
+  }
 
+  const initializeCarts = async () => {
+    if(active_warehouse){
+      await dispatch(getCarts(active_warehouse))
+    }
   }
 
   return (

@@ -4,6 +4,10 @@ import { sendPost, getRequest, doPost } from "../../server";
 const initialState = {
     userData: {},
     userToken: '',
+    current_tab: 'home',
+    settings_tab: 'account',
+    active_warehouse: null,
+    counter: process.env.REACT_APP_COUNTER,
     loggedIn: false,
     loading: false,
     error: null,
@@ -29,6 +33,35 @@ export const getMe = createAsyncThunk(
     async () => {
         const response = await getRequest("users/me")
         return response
+    }
+)
+
+export const changeTab = createAsyncThunk(
+    'user/changeTab',
+    async (payload) => {
+        return payload
+    }
+)
+
+
+export const changeSettingsTab = createAsyncThunk(
+    'user/changeSettingsTab',
+    async (payload) => {
+        return payload
+    }
+)
+
+export const updateCounter = createAsyncThunk(
+    'user/updateCounter',
+    async (payload) => {
+        return payload
+    }
+)
+
+export const changeWarehouse = createAsyncThunk(
+    'user/changeWarehouse',
+    async (payload) => {
+        return payload
     }
 )
 
@@ -125,6 +158,44 @@ const UserSlice = createSlice({
             state.loggedIn = false
             state.loading = false
             // state.error = action.error.message
+        })
+
+        // CHANGE TAB
+        builder.addCase(changeTab.pending, (state) => {
+        })
+        builder.addCase(changeTab.fulfilled, (state, action) => {
+            state.current_tab = action.payload
+        })
+        builder.addCase(changeTab.rejected, (state, action) => {
+        })
+
+        // CHANGE SETTINGS TAB
+        builder.addCase(changeSettingsTab.pending, (state) => {
+        })
+        builder.addCase(changeSettingsTab.fulfilled, (state, action) => {
+            state.settings_tab = action.payload
+        })
+        builder.addCase(changeSettingsTab.rejected, (state, action) => {
+        })
+
+
+        // UPDATE COUNTER
+        builder.addCase(updateCounter.pending, (state) => {
+        })
+        builder.addCase(updateCounter.fulfilled, (state, action) => {
+            localStorage.setItem("COUNTER", action.payload.toString())
+            state.counter = Number(action.payload)
+        })
+        builder.addCase(updateCounter.rejected, (state, action) => {
+        })
+
+        // CHANGE WAREHOUSE
+        builder.addCase(changeWarehouse.pending, (state) => {
+        })
+        builder.addCase(changeWarehouse.fulfilled, (state, action) => {
+            state.active_warehouse = action.payload
+        })
+        builder.addCase(changeWarehouse.rejected, (state, action) => {
         })
     }
 })

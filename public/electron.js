@@ -1,4 +1,5 @@
 // Module to control the application lifecycle and the native browser window.
+// require('@electron/remote/main').initialize()
 const { app, BrowserWindow, protocol, ipcMain } = require("electron");
 // const {PosPrinter} = require('@electron/remote').remote.require("electron-pos-printer");
 const {PosPrinter} = require("electron-pos-printer");
@@ -92,16 +93,18 @@ app.on("web-contents-created", (event, contents) => {
   });
 });
 
-// ipcMain.on('pos_print', (event, arg) => {
-//   alert("Person No")
-//   // const data = JSON.parse(arg)
-
-//   // PosPrinter.print(data, {
-//   //   printerName: 'Xprinter USB Printer P',
-//   //   silent: true,
-//   //   preview: true
-//   // }).catch(error => console.log(error))
-// })
+ipcMain.on('print', (event, arg) => {
+  const data = JSON.parse(arg)
+  PosPrinter.print(data, {
+    // printerName: 'Xprinter USB Printer P',
+    silent: true,
+    preview: false,
+    pageSize: '80mm',
+    copies: 1,
+    timeOutPerLine: 400,
+    margin: '0 0 0 0',
+  }).catch(error => console.log(error))
+})
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import logo from "../../../assets/dashboard/mini-logo.svg"
 
 import home from "../../../assets/dashboard/Home.svg"
@@ -7,36 +7,25 @@ import gear from "../../../assets/dashboard/Setting.svg"
 import BaseText from '../../../components/common/text'
 import { Button as AppButton } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
-import { userState } from '../../../redux/slices/userSlice'
+import { changeTab, userState } from '../../../redux/slices/userSlice'
 import { cartState } from '../../../redux/slices/cartSlice'
 import { SocketContext } from '../../../context/socket'
 import { createCart } from '../../../redux/slices/cartSlice'
 
 function NavBar() {
+
+    const [selected, setSelected] = useState("home")
+
     const { socket } = useContext(SocketContext);
 
     const { carts, cart_keys } = useAppSelector(cartState)
 
-    const { userData } = useAppSelector(userState)
+    const { userData, current_tab } = useAppSelector(userState)
 
     const dispatch = useAppDispatch()
 
-    const newCart = async () => {
-        if(cart_keys.length > 4){
-            return alert("You cannot have more than 5 active carts")
-        }
-        if(cart_keys.includes("Pending...")){
-            return alert("Seems you have a pending cart creation.")
-        }
-        try {
-            // await dispatch(createCart({}))
-            await socket.emit('create_cart', {
-                handler: userData._id,
-                warehouse: userData?.warehouse[0]
-            })
-        } catch (error) {
-
-        }
+    const tabChange = (tab) => {
+        dispatch(changeTab(tab))
     }
 
     return (
@@ -44,19 +33,13 @@ function NavBar() {
             <img className="mt-10" src={logo} alt="logo" />
 
             <div className="flex flex-col mt-10 ml-8">
-                <button onClick={() => console.log("help")} className="flex mt-10 items-center justify-start">
+                <button onClick={() => tabChange("home")} className={`flex mt-10 items-center justify-start ${ current_tab === "home" ? "bg-button" : ""} p-2.5 rounded group-hover:w-36`}>
                     <img src={home} alt="home" />
                     <BaseText p style="font-medium ml-4 line-clamp-1 hidden group-hover:block" >
                         Home
                     </BaseText>
                 </button>
-                {/* <button onClick={newCart} className="flex mt-10 items-center justify-start">
-                    <img src={add} alt="add" />
-                    <BaseText p style="font-medium ml-4 line-clamp-1 whitespace-nowrap hidden group-hover:block" >
-                        New Cart
-                    </BaseText>
-                </button> */}
-                <button className="flex mt-10 items-center justify-start">
+                <button onClick={() => tabChange("settings")} className={`flex mt-10 items-center justify-start ${ current_tab === "settings" ? "bg-button" : ""} p-2.5 rounded group-hover:w-36`}>
                     <img src={gear} alt="gear" />
                     <BaseText p style="font-medium ml-4 line-clamp-1 hidden group-hover:block" >
                         Settings

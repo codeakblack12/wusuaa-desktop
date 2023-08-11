@@ -5,7 +5,7 @@ import { Button as AppButton } from '@mui/material';
 
 
 function BaseButton(props) {
-    const { style, title, onClick, type, disabled, loading, textColor } = props
+    const { style, title, onClick, type, disabled, loading, textColor, textStyle, backColor } = props
 
     return (
         <button
@@ -13,8 +13,8 @@ function BaseButton(props) {
         onClick={onClick}
         type={type || "button"}
         disabled={disabled}
-        className={`w-80 h-12 bg-button rounded-md ${style} ${disabled ? "opacity-50" : "opacity-100"}`} >
-            {!loading && <BaseText style={`font-bold text-${textColor || "white"}`} color={textColor || "white"} p>
+        className={`w-80 h-12 ${backColor || "bg-button"} rounded-md ${style} ${disabled ? "opacity-50" : "opacity-100"}`} >
+            {!loading && <BaseText style={`font-bold text-${textColor || "white"} ${textStyle}`} color={textColor || "white"} p>
                 {title}
             </BaseText>}
             {loading && <CircularProgress
