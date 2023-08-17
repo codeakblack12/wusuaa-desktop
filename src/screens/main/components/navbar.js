@@ -39,7 +39,7 @@ function NavBar() {
                         Home
                     </BaseText>
                 </button>
-                <button onClick={() => tabChange("settings")} className={`flex mt-10 items-center justify-start ${ current_tab === "settings" ? "bg-button" : ""} p-2.5 rounded group-hover:w-36`}>
+                <button onClick={() => tabChange("settings")} className={`flex mt-5 items-center justify-start ${ current_tab === "settings" ? "bg-button" : ""} p-2.5 rounded group-hover:w-36`}>
                     <img src={gear} alt="gear" />
                     <BaseText p style="font-medium ml-4 line-clamp-1 hidden group-hover:block" >
                         Settings

@@ -12,28 +12,38 @@ import Select from 'react-select';
 import TextInput from '../../../components/common/input';
 import { changeWarehouse, userState } from '../../../redux/slices/userSlice';
 import BaseButton from '../../../components/common/button';
+import { useFormik } from 'formik'
+import { sendPut } from '../../../server';
+import { ChangePasswordSchema } from '../../../forms/schemas';
 
 function ChangePassword() {
 
   const dispatch = useAppDispatch()
 
   const { userData, active_warehouse } = useAppSelector(userState)
-  const [warehouses, setWarehouses] = useState([])
+  const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    processWarehouses()
-  }, [])
+  const initialValues = {
+    oldPassword: '',
+    newPassword: '',
+    cNewPassword: ''
+  };
 
-  const processWarehouses = async () => {
-    const warehouse_data = await userData?.warehouse?.map((val) => {
-        return {value: val, label: val}
-    })
-    setWarehouses(warehouse_data)
-  }
-
-  const changeWarehouse_ = async (data) => {
-    dispatch(changeWarehouse(data?.label))
-  }
+  const { values, errors, touched, handleChange, handleSubmit, handleBlur, setFieldValue, isValid } = useFormik({
+    initialValues,
+    validationSchema: ChangePasswordSchema,
+    onSubmit: async (values) => {
+        try {
+            setLoading(true)
+            await sendPut('users/change-password', values)
+            alert("Successfullyy updated password!")
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            alert(error?.response?.data?.message)
+        }
+    },
+  });
 
 
   return (
@@ -50,10 +60,12 @@ function ChangePassword() {
                     </h3>
                     <TextInput
                     // label={"Email address"}
-                    value={`${userData.firstName}`}
+                    value={values.oldPassword}
                     type="password"
                     style="w-96 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
+                    onChangeText={handleChange('oldPassword')}
+                    error={touched.oldPassword ? errors.oldPassword : undefined}
                     />
                 </div>
                 <div>
@@ -62,10 +74,12 @@ function ChangePassword() {
                     </h3>
                     <TextInput
                     // label={"Email address"}
-                    value={`${userData.lastName}`}
+                    value={values.newPassword}
                     type="password"
                     style="w-96 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
+                    onChangeText={handleChange('newPassword')}
+                    error={touched.newPassword ? errors.newPassword : undefined}
                     />
                 </div>
             </div>
@@ -76,10 +90,12 @@ function ChangePassword() {
                     </h3>
                     <TextInput
                     // label={"Email address"}
-                    value={userData.email}
+                    value={values.cNewPassword}
                     type="password"
                     style="w-96 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
+                    onChangeText={handleChange('cNewPassword')}
+                    error={touched.cNewPassword ? errors.cNewPassword : undefined}
                     />
                 </div>
             </div>
@@ -87,7 +103,8 @@ function ChangePassword() {
                 <BaseButton
                 title="Save"
                 style="w-96 mt-[20px]"
-                onClick={() => console.log("help")}
+                loading={loading}
+                onClick={handleSubmit}
                 />
             </div>
           </table>

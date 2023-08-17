@@ -5,12 +5,12 @@ import { store } from './redux/store';
 import { SocketContextProvider } from './context/socket';
 import AuthProvider from './context/authentication';
 import { ROUTES } from './index';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, HashRouter } from 'react-router-dom';
 import './App.css';
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <SocketContextProvider>
         <Provider store={store}>
           <AuthProvider>
@@ -24,7 +24,7 @@ function App() {
           </AuthProvider>
         </Provider>
       </SocketContextProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

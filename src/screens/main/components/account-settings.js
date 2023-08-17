@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { useAppSelector, useAppDispatch } from '../../../redux/hooks'
-import { cartState } from '../../../redux/slices/cartSlice'
+import { cartState, clearCart } from '../../../redux/slices/cartSlice'
 import toggle from '../../../assets/dashboard/cart-toggle.svg'
 import { Button as AppButton } from '@mui/material';
 import BaseText from '../../../components/common/text';
@@ -10,8 +10,11 @@ import { selectCart } from '../../../redux/slices/cartSlice';
 import { firstLetterUppercase, formatMoney } from '../../../utils/functions';
 import Select from 'react-select';
 import TextInput from '../../../components/common/input';
-import { changeWarehouse, userState } from '../../../redux/slices/userSlice';
+import { changeWarehouse, getMe, userState } from '../../../redux/slices/userSlice';
 import BaseButton from '../../../components/common/button';
+import { useFormik } from 'formik'
+import { UpdateSchema } from '../../../forms/schemas';
+import { sendPut } from '../../../server';
 
 function AccountSettings() {
 
@@ -19,10 +22,34 @@ function AccountSettings() {
 
   const { userData, active_warehouse } = useAppSelector(userState)
   const [warehouses, setWarehouses] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     processWarehouses()
   }, [])
+
+  const initialValues = {
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    email: userData.email
+  };
+
+  const { values, errors, touched, handleChange, handleSubmit, handleBlur, setFieldValue, isValid } = useFormik({
+    initialValues,
+    validationSchema: UpdateSchema,
+    onSubmit: async (values) => {
+        try {
+            setLoading(true)
+            await sendPut('users/update-me', values)
+            await dispatch(getMe())
+            alert("Successfully updated!")
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            alert(error?.response?.data?.message)
+        }
+    },
+  });
 
   const processWarehouses = async () => {
     const warehouse_data = await userData?.warehouse?.map((val) => {
@@ -33,6 +60,7 @@ function AccountSettings() {
 
   const changeWarehouse_ = async (data) => {
     dispatch(changeWarehouse(data?.label))
+    dispatch(clearCart())
   }
 
 
@@ -50,9 +78,11 @@ function AccountSettings() {
                     </h3>
                     <TextInput
                     // label={"Email address"}
-                    value={`${userData.firstName}`}
+                    value={values.firstName}
                     style="w-96 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
+                    onChangeText={handleChange('firstName')}
+                    error={touched.firstName ? errors.firstName : undefined}
                     />
                 </div>
                 <div>
@@ -61,9 +91,11 @@ function AccountSettings() {
                     </h3>
                     <TextInput
                     // label={"Email address"}
-                    value={`${userData.lastName}`}
+                    value={values.lastName}
                     style="w-96 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
+                    onChangeText={handleChange('lastName')}
+                    error={touched.lastName ? errors.lastName : undefined}
                     />
                 </div>
             </div>
@@ -106,10 +138,12 @@ function AccountSettings() {
                     </h3>
                     <TextInput
                     // label={"Email address"}
-                    value={userData.email}
+                    value={values.email}
                     type="email"
                     style="w-96 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
+                    onChangeText={handleChange('email')}
+                    error={touched.email ? errors.email : undefined}
                     />
                 </div>
             </div>
@@ -117,7 +151,8 @@ function AccountSettings() {
                 <BaseButton
                 title="Save"
                 style="w-96 mt-[20px]"
-                onClick={() => console.log("help")}
+                loading={loading}
+                onClick={handleSubmit}
                 />
             </div>
           </table>

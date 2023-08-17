@@ -58,6 +58,13 @@ export const selectCart = createAsyncThunk(
     }
 )
 
+export const clearCart = createAsyncThunk(
+    'cart/clearCart',
+    async (payload) =>{
+        return payload
+    }
+)
+
 const CartSlice = createSlice({
     name: "cart",
     initialState,
@@ -175,6 +182,17 @@ const CartSlice = createSlice({
         })
         builder.addCase(selectCart.rejected, (state, action) => {
             state.loading = false
+        })
+
+        // CLEAR CART
+        builder.addCase(clearCart.pending, (state) => {
+        })
+        builder.addCase(clearCart.fulfilled, (state, action) => {
+            state.selected_cart = ''
+            state.selected_cart_items = []
+
+        })
+        builder.addCase(clearCart.rejected, (state, action) => {
         })
     }
 })

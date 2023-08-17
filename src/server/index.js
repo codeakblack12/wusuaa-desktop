@@ -1,6 +1,6 @@
 import axios from "axios";
-export const WUSUAA_API = "https://coral-app-r6lzx.ondigitalocean.app/";
-export const WUSUAA_SOCKET_API = "https://coral-app-r6lzx.ondigitalocean.app";
+export const WUSUAA_API = "https://api.wusuaafrozenfoods.com/";
+export const WUSUAA_SOCKET_API = "https://api.wusuaafrozenfoods.com";
 
 export const doPost = async (url, payload) => {
   try {
@@ -49,6 +49,21 @@ export const sendPost = async ( url, payload ) => {
     });
 
     return response
+};
+
+export const sendPut = async ( url, payload ) => {
+
+  const token = await localStorage.getItem("USER_TOKEN");
+
+  var response = await axios.put(WUSUAA_API + url, payload, {
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        "Charset": "UTF-8"
+      },
+  });
+
+  return response
 };
 
 export const sendDelete = async ( url, payload ) => {

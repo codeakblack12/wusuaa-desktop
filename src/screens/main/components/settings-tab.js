@@ -14,6 +14,7 @@ import { SocketContext } from '../../../context/socket';
 import PayMethod from '../../../components/modals/pay-method';
 import { render, Printer, Text } from 'react-thermal-printer';
 import { changeSettingsTab, userState } from '../../../redux/slices/userSlice';
+import { useNavigate } from 'react-router-dom';
 // import { IpcRenderer } from 'electron'
 
 // const {PosPrinter} = require('@electron/remote/main/index')
@@ -33,6 +34,8 @@ const data_ = await render(
 
 function SettingsTab() {
 
+  const navigate = useNavigate()
+
   const { socket } = useContext(SocketContext)
   const { userData } = useAppSelector(userState)
 
@@ -46,13 +49,18 @@ function SettingsTab() {
 
   const { settings_tab } = useAppSelector(userState)
 
+  const logUserOut = () => {
+    localStorage.clear()
+    navigate("/login")
+  }
+
 
   return (
     <div className={`h-full mt-2 mr-[25px] ml-[10px] opacity-${loading ? "20" : "100"}`}>
       <BaseText p fontSize={"2xl"} style="text-2xl font-medium mb-[15px]" color="black" >
         Settings
       </BaseText>
-      <div className="w-[255px] px-[20px] py-[20px] h-full flex flex-col justify-between bg-white border border-primary rounded-2xl overflow-hidden">
+      <div className="w-[255px] px-[20px] py-[20px] h-full flex flex-col justify-between bg-white rounded-2xl overflow-hidden">
 
         <div>
           <BaseButton
@@ -83,7 +91,7 @@ function SettingsTab() {
           title="Log Out"
           style="w-full bg-black"
           backColor="bg-black"
-          onClick={() => setPay(true)}
+          onClick={logUserOut}
           />
         </div>
 
