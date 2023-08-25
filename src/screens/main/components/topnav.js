@@ -31,31 +31,31 @@ function TopNav() {
 
 
     return (
-        <div className="flex w-full h-20 shadow bg-white items-center" >
+        <div className="flex w-full h-fit py-3 justify-between shadow bg-white items-center" >
             <div className="flex">
-                <BaseText p style="font-medium ml-10 mt-1" color="light-gray" >
+                <BaseText p style="font-medium ml-10 mt-1 w-max" color="light-gray" >
                     Cashier:
                 </BaseText>
-                <BaseText p style="font-medium ml-1 mt-1" color="black" >
+                <BaseText p style="font-medium ml-1 mt-1 line-clamp-1 w-max" color="black" >
                 {`${userData.firstName} ${userData.lastName}`}
                 </BaseText>
             </div>
 
             <div className="flex">
-                <BaseText p style="font-medium ml-80 mt-1" color="light-gray" >
+                <BaseText p style="font-medium mt-1 line-clamp-1 w-max" color="light-gray" >
                     Warehouse no:
                 </BaseText>
-                <BaseText p style="font-medium ml-1 mt-1" color="black" >
+                <BaseText p style="font-medium ml-1 mt-1 line-clamp-1 w-max" color="black" >
                     {active_warehouse}
                 </BaseText>
             </div>
 
 
-            <div className="flex">
-                <BaseText p style="font-medium ml-80 mt-1" color="light-gray" >
+            <div className="flex mr-10">
+                <BaseText p style="font-medium mt-1 w-max" color="light-gray" >
                     Counter:
                 </BaseText>
-                <BaseText p style="font-medium ml-1 mt-1" color="black" >
+                <BaseText p style="font-medium ml-1 mt-1 line-clamp-1 w-max" color="black" >
                     {counter}
                 </BaseText>
             </div>

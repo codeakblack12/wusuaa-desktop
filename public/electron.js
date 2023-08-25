@@ -97,7 +97,7 @@ ipcMain.on('print', (event, arg) => {
   const data = JSON.parse(arg)
   PosPrinter.print(data, {
     // printerName: 'Xprinter USB Printer P',
-    silent: true,
+    silent: false,
     preview: false,
     pageSize: '80mm',
     copies: 1,

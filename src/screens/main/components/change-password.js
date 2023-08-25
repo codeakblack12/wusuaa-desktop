@@ -54,7 +54,7 @@ function ChangePassword() {
       <div className="w-[98%] h-full bg-white border border-primary rounded-2xl overflow-y-auto">
           <table className="table-fixed w-full">
             <div className="relative p-[20px] w-full flex justify-between">
-                <div>
+                <div className='w-6/12'>
                     <h3 className="text-base">
                         {`Old Password`}
                     </h3>
@@ -62,13 +62,13 @@ function ChangePassword() {
                     // label={"Email address"}
                     value={values.oldPassword}
                     type="password"
-                    style="w-96 bg-white border border-unselect-text text-dark"
+                    style="w-11/12 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
                     onChangeText={handleChange('oldPassword')}
                     error={touched.oldPassword ? errors.oldPassword : undefined}
                     />
                 </div>
-                <div>
+                <div className='w-6/12'>
                     <h3 className="text-base">
                         {`New Password`}
                     </h3>
@@ -76,7 +76,7 @@ function ChangePassword() {
                     // label={"Email address"}
                     value={values.newPassword}
                     type="password"
-                    style="w-96 bg-white border border-unselect-text text-dark"
+                    style="w-11/12 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
                     onChangeText={handleChange('newPassword')}
                     error={touched.newPassword ? errors.newPassword : undefined}
@@ -84,7 +84,7 @@ function ChangePassword() {
                 </div>
             </div>
             <div className="relative p-[20px] w-full flex justify-between">
-                <div>
+                <div className='w-6/12'>
                     <h3 className="text-base">
                         {`Confirm New Password`}
                     </h3>
@@ -92,7 +92,7 @@ function ChangePassword() {
                     // label={"Email address"}
                     value={values.cNewPassword}
                     type="password"
-                    style="w-96 bg-white border border-unselect-text text-dark"
+                    style="w-11/12 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
                     onChangeText={handleChange('cNewPassword')}
                     error={touched.cNewPassword ? errors.cNewPassword : undefined}
@@ -102,7 +102,7 @@ function ChangePassword() {
             <div className="relative p-[20px] w-full flex justify-between">
                 <BaseButton
                 title="Save"
-                style="w-96 mt-[20px]"
+                style="w-full mt-[20px]"
                 loading={loading}
                 onClick={handleSubmit}
                 />

@@ -65,6 +65,7 @@ const receiptInformation = (data) => {
             // ['Date & Time:', "23 May, 2023, 10:34"],
             ['Date & Time:', moment(new Date()).format('DD MMM YYYY, h:mma')],
             ['Cashier:', data?.cashier],
+            ['Customer:', data?.customer_name || "N/A"],
             ['Payment Method:', data?.payment_type || ''],
         ],
         // custom style for the table header
@@ -92,8 +93,11 @@ const receiptItems = async (data) => {
         // list of the columns to be rendered in the table header
         tableHeader: ['Item', 'Qty', 'Amount'],
         // multi dimensional array depicting the rows and columns of the table body
-        tableBody: items,
-        tableFooter: ['Total', '', formatMoney(data?.subtotal, data?.currency)],
+        tableBody: [...items,
+            [`NHIL/...(${ data?.covidVatValue || "0"}%)`, '-', formatMoney(data?.covidVat, data?.currency)],
+            [`VAT(${ data?.vatValue || "0"}%)`, '-', formatMoney(data?.vat || 0, data?.currency)],
+        ],
+        tableFooter: ['Total', '', formatMoney(data?.total, data?.currency)],
         // custom style for the table header
         tableHeaderStyle: { backgroundColor: '#000', color: "#000"},
         // custom style for the table body

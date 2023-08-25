@@ -17,6 +17,6 @@ export const RECEIPT_FOOTER = [
     {
         type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
         value: 'Thank you, Please visit agaiin',
-        style: {fontWeight: "500", textAlign: 'center', fontSize: "10px", marginTop: "10px"}
+        style: {fontWeight: "500", textAlign: 'center', fontSize: "10px", marginTop: "0px"}
     },
 ]

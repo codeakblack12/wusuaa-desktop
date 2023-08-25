@@ -7,10 +7,13 @@ import { addToCart } from '../../../redux/slices/cartSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import { userState } from '../../../redux/slices/userSlice';
 import { createCart } from '../../../redux/slices/cartSlice';
+import NameInputModal from '../../../components/modals/name-input';
 
 export default function AddToggle({onClick}) {
 
   const [adding, setAdding] = useState(false)
+  const [name, setName] = useState("")
+  const [visible, setVisible] = useState(false)
 
   const dispatch = useAppDispatch()
 
@@ -31,11 +34,11 @@ export default function AddToggle({onClick}) {
         return alert("Seems you have a pending cart creation.")
     }
     try {
-        console.log("Help")
         await dispatch(createCart({}))
         await socket.emit('create_cart', {
             counter: counter,
-            warehouse: active_warehouse
+            warehouse: active_warehouse,
+            customer_name: name
         })
 
         setTimeout(() => {
@@ -47,8 +50,14 @@ export default function AddToggle({onClick}) {
 }
 
   return (
+    <>
     <button
-    onClick={newCart}
+    onClick={() => {
+      if(cart_keys.length > 4){
+          return alert("You cannot have more than 5 active carts")
+      }
+      setVisible(true)
+    }}
     disabled={adding}
     className='h-fit w-[115px]'>
         <svg className={`fill-current text-toggle-unselect`}
@@ -58,5 +67,13 @@ export default function AddToggle({onClick}) {
             <path d="M30 21.75C29.59 21.75 29.25 21.41 29.25 21V9C29.25 8.59 29.59 8.25 30 8.25C30.41 8.25 30.75 8.59 30.75 9V21C30.75 21.41 30.41 21.75 30 21.75Z" fill="#888888"/>
         </svg>
     </button>
+    <NameInputModal
+    email={name}
+    setEmail={(value) => setName(value)}
+    handleSubmit={() => {newCart(); setVisible(false)}}
+    visible={visible}
+    setVisible={setVisible}
+    />
+    </>
   )
 }

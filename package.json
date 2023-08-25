@@ -12,6 +12,9 @@
     "mac": {
       "target": "dmg"
     },
+    "nsis": {
+      "deleteAppDataOnUninstall": true
+    },
     "win": {
       "target": "nsis"
     },
@@ -20,7 +23,7 @@
     }
   },
   "name": "wusuaa",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "private": true,
   "author": "Paul Igbinedion",
   "description": "Wusuaa desktop sales app",

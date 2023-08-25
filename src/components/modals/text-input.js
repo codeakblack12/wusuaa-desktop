@@ -18,7 +18,8 @@ function TextInputModal({
                 {/* HEADER */}
                 <div className="flex items-start justify-between px-[20px] pt-6 rounded-t">
                     <h3 className="text-base font-semibold">
-                        {`Enter Email address${selected === "ONLINE" ? "" : " (optional)"}`}
+                        {selected === "ONLINE" && `Enter Email address"}`}
+                        {selected !== "ONLINE" &&`Enter Email address/Phone Number (optional)}`}
                     </h3>
                     <button
                         onClick={() => setConfirmed(false)}

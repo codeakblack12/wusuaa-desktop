@@ -4,6 +4,7 @@ import closeicon from "../../assets/dashboard/close-circle.svg"
 import cash from "../../assets/dashboard/cash.svg"
 import wallet from "../../assets/dashboard/wallet.svg"
 import card from "../../assets/dashboard/card.svg"
+import momo from "../../assets/dashboard/momo.svg"
 
 import select from "../../assets/dashboard/select.svg"
 import unselect from "../../assets/dashboard/unselect.svg"
@@ -70,6 +71,12 @@ function PayMethod(props) {
             icon: card,
             value: "POS"
         },
+        {
+            id: 4,
+            title: "Momo Pay",
+            icon: momo,
+            value: "MOMO"
+        },
     ]
 
     const confirmPayment = async () => {
@@ -78,7 +85,8 @@ function PayMethod(props) {
             const response = await sendPost('sales/cart/checkout', {
                 id: data._id,
                 email: values.email,
-                payment_type: selected
+                payment_type: selected,
+                customer_name: data?.customer_name
             })
             setLoading(false)
             onCancel()
@@ -95,6 +103,7 @@ function PayMethod(props) {
             const response = await sendPost('sales/payment/paystack-link', {
                 id: data?._id,
                 email: values.email,
+                customer_name: data?.customer_name,
                 location: "WAREHOUSE"
             })
             setLink(response?.data?.link)
@@ -109,7 +118,7 @@ function PayMethod(props) {
 
     const PayCard = ({item}) => {
         return(
-            <div className={`flex py-[18px] border-b-[${item?.id < 3 ? "1px" : "0px"}] border-unselect-text justify-between`}>
+            <div className={`flex py-[18px] border-b-[${item?.id < 4 ? "1px" : "0px"}] border-unselect-text justify-between`}>
                 <div className='flex'>
                     <img src={item?.icon} alt="close" />
                     <BaseText p fontSize={"sm"} style={`text-${"sm"} font-${"bold"} ml-[12px]`} color="black" >

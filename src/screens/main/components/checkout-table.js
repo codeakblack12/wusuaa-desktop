@@ -14,6 +14,7 @@ import { SocketContext } from '../../../context/socket';
 import PayMethod from '../../../components/modals/pay-method';
 import { render, Printer, Text } from 'react-thermal-printer';
 import { userState } from '../../../redux/slices/userSlice';
+import CloseCart from '../../../components/modals/close-cart';
 // import { IpcRenderer } from 'electron'
 
 // const {PosPrinter} = require('@electron/remote/main/index')
@@ -39,6 +40,7 @@ function CheckoutTable() {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(false)
   const [pay, setPay] = useState(false)
+  const [close, setClose] = useState(false)
   const [email, setEmail] = useState("")
 
 
@@ -98,7 +100,7 @@ function CheckoutTable() {
     title, value, size, weight
   }) => {
     return(
-      <div className='w-full flex justify-between' >
+      <div className='w-full flex justify-between my-2' >
         <BaseText p fontSize={size} style={`text-${size} font-${weight || "normal"}`} color="black" >
           {title}
         </BaseText>
@@ -109,40 +111,70 @@ function CheckoutTable() {
     )
   }
 
+  const dummy = [
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+    {category: "Titus", quantity: "3", price: "4000", currency: "GHS"},
+  ]
+
   const ItemRender = ({item, index}) => {
     return (
       <tr className='mt-[15px] w-full flex justify-between'>
-        <td className='text-center text-sm w-[33%] text-start' >{firstLetterUppercase(item.category)}</td>
-        <td className='text-center text-sm font-sans w-[33%] text-start' >{`x ${item?.quantity}`}</td>
-        <td className='text-center text-sm font-sans w-[33%] text-start' >{formatMoney(item.price, data?.currency)}</td>
+        <td className='text-sm w-[30%] text-start' >{firstLetterUppercase(item.category)}</td>
+        <td className='text-sm font-sans w-[30%] text-center' >{`x ${item?.quantity}`}</td>
+        <td className='text-sm font-sans w-[30%] text-end' >{formatMoney(item.price, data?.currency)}</td>
       </tr>
     )
   }
 
   return (
     <div className={`h-full my-[50px] mr-10 opacity-${loading ? "20" : "100"}`}>
-      <div className="w-80 px-[20px] py-[20px] h-full flex flex-col justify-between bg-white border border-primary rounded-2xl overflow-hidden">
+      <div className="w-full px-[20px] py-[20px] h-full flex flex-col justify-between bg-white border border-primary rounded-2xl overflow-hidden">
 
-        <div>
-          <BaseText p fontSize={"2xl"} style="text-2xl font-medium" color="black" >
-            Checkout
+        <div className='h-4/6 overflow-auto'>
+          <BaseText p fontSize={"2xl"} style="text-2xl font-medium line-clamp-2" color="black" >
+            Checkout {'\n'}{data?.customer_name ? `(${data?.customer_name})` : ""}
           </BaseText>
           {/* <div className='w-full my-[20px] h-[400px] border-t-[1px] border-unselect-text flex flex-col justify-around'>
 
           </div> */}
-          <table className='table-fixed w-full mb-[20px] h-[400px] border-unselect-text flex flex-col justify-start overflow-y-auto'>
+          <table className='table-fixed w-full border-unselect-text flex flex-col justify-start'>
             <thead className="bg-white h-10 border-b-[1px] flex items-center sticky top-0">
                 <tr className='w-full flex justify-between'>
-                  <th className="text-dark-transparent text-sm font-medium w-[33%] text-start">Item Name</th>
-                  <th className="text-dark-transparent text-sm font-medium w-[33%] text-start">Quantity</th>
-                  <th className="text-dark-transparent text-sm font-medium w-[33%] text-start">Price</th>
+                  <th className="text-dark-transparent text-sm font-medium w-[30%] text-start line-clamp-1">Item Name</th>
+                  <th className="text-dark-transparent text-sm font-medium w-[30%] text-center line-clamp-1">Quantity</th>
+                  <th className="text-dark-transparent text-sm font-medium w-[30%] text-end line-clamp-1">Price</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody className='overflow-y-scroll'>
               {
                 data?.items?.map((item, index) => {
                   return <ItemRender index={index} item={item} />
                 })
+                // dummy?.map((item, index) => {
+                //   return <ItemRender index={index} item={item} />
+                // })
               }
               {/* {
                 selected_cart_items?.map((item, index) => {
@@ -151,7 +183,11 @@ function CheckoutTable() {
               } */}
             </tbody>
           </table>
-          <div className='w-full my-[20px] h-[100px] border-y-[1px] border-unselect-text flex flex-col justify-around'>
+        </div>
+
+
+        <div className='h-3/6 flex flex-col justify-between'>
+          <div className='w-full border-y-[1px] border-unselect-text flex flex-col justify-around'>
             <PriceComponent
             title={"Subtotal"}
             value={formatMoney(data?.subtotal || 0, data?.currency)}
@@ -159,46 +195,66 @@ function CheckoutTable() {
             weight={"normal"}
             />
             <PriceComponent
-            title={"VAT(0%)"}
-            value={formatMoney(0, data?.currency)}
+            title={`NHIL/GETFD/COVID(${ data?.covidVatValue || "0"}%)`}
+            value={formatMoney( data?.covidVat || 0, data?.currency)}
+            size={"base"}
+            weight={"normal"}
+            />
+            <PriceComponent
+            title={`VAT(${ data?.vatValue || "0"}%)`}
+            value={formatMoney( data?.vat || 0, data?.currency)}
             size={"base"}
             weight={"normal"}
             />
           </div>
           <PriceComponent
           title={"Total"}
-          value={formatMoney(data?.subtotal || 0, data?.currency)}
+          value={formatMoney(data?.total || 0, data?.currency)}
           size={"xl"}
           weight={"semibold"}
           />
-        </div>
-
-        <div>
-          {!data?.confirmed && <BaseButton
-          title="Proceed to checkout"
-          style="w-full"
-          loading={loading}
-          disabled={loading || data?.subtotal < 1 || !data?.items?.length}
-          onClick={() => setPay(true)}
-          />}
-          {data?.confirmed && <BaseButton
-          // textColor={"button"}
-          title="Print Receipt"
-          style="w-full"
-          // style="w-full bg-white border border-black"
-          loading={loading}
-          disabled={loading || data?.subtotal < 1}
-          onClick={async () => {
-            onPrintReceipt()
-            // alert("Feature currently unavailable")
-          }}
-          />}
+          <div className=''>
+            {!data?.confirmed && <BaseButton
+            title="Proceed to checkout"
+            style="w-full mt-[10px]"
+            loading={loading}
+            disabled={loading || data?.subtotal < 1 || !data?.items?.length}
+            onClick={() => setPay(true)}
+            />}
+            {data?.confirmed && <BaseButton
+            // textColor={"button"}
+            title="Print Receipt"
+            style="w-full"
+            // style="w-full bg-white border border-black"
+            loading={loading}
+            disabled={loading || data?.subtotal < 1}
+            onClick={async () => {
+              onPrintReceipt()
+              // alert("Feature currently unavailable")
+            }}
+            />}
+            <BaseButton
+            // textColor={"button"}
+            title="Close Cart"
+            style="w-full bg-error mt-[10px]"
+            disabled={loading || !data?.uid}
+            onClick={async () => {
+              setClose(true)
+              // alert("Feature currently unavailable")
+            }}
+            />
+          </div>
         </div>
 
       </div>
       <PayMethod
       visible={pay}
       onCancel={() => setPay(false)}
+      data={data}
+      />
+      <CloseCart
+      visible={close}
+      onCancel={() => setClose(false)}
       data={data}
       />
     </div>

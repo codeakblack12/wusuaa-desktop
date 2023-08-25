@@ -21,7 +21,7 @@ function DataTable() {
     return (
       <tr className='h-[56px] border-b-[1px]'>
         <td className='text-center font-sans ' >{index + 1}</td>
-        <td className='text-center font-sans ' >{item?.uid?.toUpperCase()}</td>
+        <td className='text-center font-sans' >{item?.uid?.toUpperCase()}</td>
         <td className='text-center  ' >{firstLetterUppercase(item.category)}</td>
         <td className='text-center font-sans ' >{`x1`}</td>
         <td className='text-center font-sans ' >{formatMoney(item.price, item.currency)}</td>

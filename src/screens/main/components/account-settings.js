@@ -72,27 +72,27 @@ function AccountSettings() {
       <div className="w-[98%] h-full bg-white border border-primary rounded-2xl overflow-y-auto">
           <table className="table-fixed w-full">
             <div className="relative p-[20px] w-full flex justify-between">
-                <div>
+                <div className='w-6/12'>
                     <h3 className="text-base">
                         {`First Name`}
                     </h3>
                     <TextInput
                     // label={"Email address"}
                     value={values.firstName}
-                    style="w-96 bg-white border border-unselect-text text-dark"
+                    style="w-11/12 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
                     onChangeText={handleChange('firstName')}
                     error={touched.firstName ? errors.firstName : undefined}
                     />
                 </div>
-                <div>
+                <div className='w-6/12'>
                     <h3 className="text-base">
                         {`Last Name`}
                     </h3>
                     <TextInput
                     // label={"Email address"}
                     value={values.lastName}
-                    style="w-96 bg-white border border-unselect-text text-dark"
+                    style="w-11/12 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
                     onChangeText={handleChange('lastName')}
                     error={touched.lastName ? errors.lastName : undefined}
@@ -100,7 +100,7 @@ function AccountSettings() {
                 </div>
             </div>
             <div className="relative p-[20px] w-full flex justify-between">
-                <div>
+                <div className='w-6/12'>
                     <h3 className="text-base">
                         {`Active Warehouse`}
                     </h3>
@@ -108,11 +108,11 @@ function AccountSettings() {
                     // label={"Email address"}
                     value={userData?.warehouse ? userData?.warehouse[0] : ""}
                     type="email"
-                    style="w-96 bg-white border border-unselect-text text-dark"
+                    style="w-full bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
                     /> */}
                     <Select
-                        className="mt-6 w-96 bg-white text-dark"
+                        className="mt-6 w-11/12 bg-white text-dark"
                         classNamePrefix="select"
                         defaultValue={{value: active_warehouse, label: active_warehouse}}
                         isDisabled={false}
@@ -132,7 +132,7 @@ function AccountSettings() {
                         }}
                     />
                 </div>
-                <div>
+                <div className='w-6/12'>
                     <h3 className="text-base">
                         {`Email address`}
                     </h3>
@@ -140,7 +140,7 @@ function AccountSettings() {
                     // label={"Email address"}
                     value={values.email}
                     type="email"
-                    style="w-96 bg-white border border-unselect-text text-dark"
+                    style="w-11/12 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
                     onChangeText={handleChange('email')}
                     error={touched.email ? errors.email : undefined}
@@ -150,7 +150,7 @@ function AccountSettings() {
             <div className="relative p-[20px] w-full flex justify-between">
                 <BaseButton
                 title="Save"
-                style="w-96 mt-[20px]"
+                style="w-full mt-[20px]"
                 loading={loading}
                 onClick={handleSubmit}
                 />

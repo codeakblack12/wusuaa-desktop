@@ -42,6 +42,13 @@ export const addToCart = createAsyncThunk(
     }
 )
 
+export const closeCart = createAsyncThunk(
+    'cart/close',
+    async (payload) =>{
+        return payload
+    }
+)
+
 
 export const deleteFromCart = createAsyncThunk(
     'cart/delete',
@@ -151,6 +158,30 @@ const CartSlice = createSlice({
             state.loading = false
         })
         builder.addCase(addToCart.rejected, (state, action) => {
+            state.loading = false
+        })
+
+        // CLOSE CART
+        builder.addCase(closeCart.pending, (state) => {
+            state.loading = true
+        })
+        builder.addCase(closeCart.fulfilled, (state, action) => {
+            state.carts = state.carts.filter((val) => {
+                if(val.uid !== action.payload){
+                    return val
+                }
+            })
+            if(state.selected_cart === action.payload){
+                state.selected_cart = ''
+                state.selected_cart_items = []
+            }
+            state.cart_keys = state.cart_keys.filter((val) => {
+                if(val !== action.payload){
+                    return val
+                }
+            })
+        })
+        builder.addCase(closeCart.rejected, (state, action) => {
             state.loading = false
         })
 

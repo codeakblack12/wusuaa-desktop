@@ -16,8 +16,13 @@ function Frame() {
     <div className="flex flex-col w-full h-screen bg-offwhite">
         <TopNav/>
         {current_tab === "home" && <div className="flex h-5/6">
-          <DataTable/>
-          <CheckoutTable/>
+          <div className='w-[70%]'>
+            <DataTable/>
+          </div>
+          <div className='w-[30%]'>
+            <CheckoutTable/>
+          </div>
+
         </div>}
         {current_tab === "settings" && <div className="flex h-5/6">
           <SettingsTab/>

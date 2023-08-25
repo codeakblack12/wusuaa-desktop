@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react'
 import NavBar from './components/navbar'
 import Frame from './components/frame'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { addToCart, getCarts, updateCartList } from '../../redux/slices/cartSlice'
+import { addToCart, closeCart, getCarts, updateCartList } from '../../redux/slices/cartSlice'
 import { getMe, getPrevMe } from '../../redux/slices/userSlice'
 import { userState } from '../../redux/slices/userSlice'
 import { SocketContext } from '../../context/socket'
@@ -25,13 +25,21 @@ function Dashboard() {
       addCart(payload)
     })
 
+    socket.on(`CLOSE-CART-${active_warehouse}`, (payload) => {
+      closeCart_(payload)
+    })
+
     return () => {
       socket.off(userData._id);
     };
-  }, [userData, socket])
+  }, [userData, socket, active_warehouse])
 
   const addCart = async (payload) => {
     await dispatch(updateCartList({type: "add", payload: payload}))
+  }
+
+  const closeCart_ = async (payload) => {
+    await dispatch(closeCart(payload))
   }
 
   const dispatch = useAppDispatch()
