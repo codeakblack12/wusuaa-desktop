@@ -1,23 +1,20 @@
 import axios from "axios";
-// export const WUSUAA_API = "https://248f-102-219-153-199.ngrok-free.app/";
-export const WUSUAA_API = "https://api.wusuaafrozenfoods.com/";
+// export const WUSUAA_API = "https://ebc7-102-219-153-213.ngrok-free.app/";
+// export const WUSUAA_API = "https://api.wusuaafrozenfoods.com/";
+export const WUSUAA_API = "https://staging.wusuaafrozenfoods.com/";
 // export const WUSUAA_SOCKET_API = "https://api.wusuaafrozenfoods.com";
 
 export const doPost = async (url, payload) => {
-  try {
-      const response = await axios.post(WUSUAA_API + url, payload, {
-        headers: {
-          'Authorization': "None",
-          Accept: "Application/json",
-          'Content-Type': "Application/json",
-          "Charset": "UTF-8"
-        },
-      });
-      console.log(response)
-      return response.data
-  } catch (error) {
-    console.log(error)
-  }
+  const response = await axios.post(WUSUAA_API + url, payload, {
+    headers: {
+      'Authorization': "None",
+      Accept: "Application/json",
+      'Content-Type': "Application/json",
+      "Charset": "UTF-8"
+    },
+  });
+  console.log(response)
+  return response.data
 };
 
 export const getRequest = async (url) => {

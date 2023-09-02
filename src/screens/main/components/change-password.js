@@ -36,7 +36,7 @@ function ChangePassword() {
         try {
             setLoading(true)
             await sendPut('users/change-password', values)
-            alert("Successfullyy updated password!")
+            alert("Successfully updated password!")
             setLoading(false)
         } catch (error) {
             setLoading(false)

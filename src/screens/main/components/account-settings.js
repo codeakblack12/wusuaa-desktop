@@ -59,8 +59,9 @@ function AccountSettings() {
   }
 
   const changeWarehouse_ = async (data) => {
-    dispatch(changeWarehouse(data?.label))
-    dispatch(clearCart())
+    await dispatch(changeWarehouse(data?.label))
+    await dispatch(clearCart())
+    alert(`Warehouse Switched to ${data?.label}`)
   }
 
 
@@ -81,7 +82,7 @@ function AccountSettings() {
                     value={values.firstName}
                     style="w-11/12 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
-                    onChangeText={handleChange('firstName')}
+                    // onChangeText={handleChange('firstName')}
                     error={touched.firstName ? errors.firstName : undefined}
                     />
                 </div>
@@ -94,7 +95,7 @@ function AccountSettings() {
                     value={values.lastName}
                     style="w-11/12 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
-                    onChangeText={handleChange('lastName')}
+                    // onChangeText={handleChange('lastName')}
                     error={touched.lastName ? errors.lastName : undefined}
                     />
                 </div>
@@ -142,19 +143,19 @@ function AccountSettings() {
                     type="email"
                     style="w-11/12 bg-white border border-unselect-text text-dark"
                     titleStyle="text-dark"
-                    onChangeText={handleChange('email')}
+                    // onChangeText={handleChange('email')}
                     error={touched.email ? errors.email : undefined}
                     />
                 </div>
             </div>
-            <div className="relative p-[20px] w-full flex justify-between">
+            {/* <div className="relative p-[20px] w-full flex justify-between">
                 <BaseButton
                 title="Save"
                 style="w-full mt-[20px]"
                 loading={loading}
                 onClick={handleSubmit}
                 />
-            </div>
+            </div> */}
           </table>
       </div>
     </div>

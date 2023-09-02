@@ -22,6 +22,7 @@ function CounterSettings() {
   const updateCounterr = async () => {
     try {
         dispatch(updateCounter(counterr))
+        alert(`Counter number changed to ${counterr}`)
     } catch (error) {
         alert(error)
     }

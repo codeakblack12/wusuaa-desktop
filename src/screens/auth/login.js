@@ -80,12 +80,18 @@ function Login() {
         onChangeText={handleChange('password')}
         error={touched.password ? errors.password : undefined}
         />
-        <div className="w-96 mb-8"></div>
-        {/* <button onClick={() => routeChange("/forgot-password")} className="w-96" >
-          <BaseText p style="mb-8 font-medium text-end mt-2" >
-              Forgot Password?
-          </BaseText>
-        </button> */}
+        {/* <div className="w-96 mb-8"></div> */}
+        <div className='flex w-96 justify-between'>
+          <div/>
+          <div>
+            <button onClick={() => routeChange("/forgot-password")} className="self-end" >
+              <BaseText p style="mb-8 font-medium text-end mt-2" >
+                  Forgot Password?
+              </BaseText>
+            </button>
+          </div>
+
+        </div>
 
         <BaseButton
         title="Login"
