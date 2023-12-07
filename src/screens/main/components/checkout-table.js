@@ -195,13 +195,13 @@ function CheckoutTable() {
             weight={"normal"}
             />
             <PriceComponent
-            title={`NHIL/GETFD/COVID(${ data?.covidVatValue || "0"}%)`}
+            title={`NHIL/GETFD/COVID(${ data?.covidVatValue ? data?.covidVatValue?.toFixed(2) : "0"}%)`}
             value={formatMoney( data?.covidVat || 0, data?.currency)}
             size={"base"}
             weight={"normal"}
             />
             <PriceComponent
-            title={`VAT(${ data?.vatValue || "0"}%)`}
+            title={`VAT(${ data?.vatValue ? data?.vatValue?.toFixed(2) : "0"}%)`}
             value={formatMoney( data?.vat || 0, data?.currency)}
             size={"base"}
             weight={"normal"}

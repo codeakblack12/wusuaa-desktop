@@ -1,8 +1,7 @@
 import axios from "axios";
-// export const WUSUAA_API = "https://ebc7-102-219-153-213.ngrok-free.app/";
+export const WUSUAA_API = "https://23df-102-212-163-17.ngrok-free.app/";
 // export const WUSUAA_API = "https://api.wusuaafrozenfoods.com/";
-export const WUSUAA_API = "https://staging.wusuaafrozenfoods.com/";
-// export const WUSUAA_SOCKET_API = "https://api.wusuaafrozenfoods.com";
+// export const WUSUAA_API = "https://staging.wusuaafrozenfoods.com/";
 
 export const doPost = async (url, payload) => {
   const response = await axios.post(WUSUAA_API + url, payload, {
@@ -13,7 +12,6 @@ export const doPost = async (url, payload) => {
       "Charset": "UTF-8"
     },
   });
-  console.log(response)
   return response.data
 };
 

@@ -94,8 +94,8 @@ const receiptItems = async (data) => {
         tableHeader: ['Item', 'Qty', 'Amount'],
         // multi dimensional array depicting the rows and columns of the table body
         tableBody: [...items,
-            [`NHIL/...(${ data?.covidVatValue || "0"}%)`, '-', formatMoney(data?.covidVat, data?.currency)],
-            [`VAT(${ data?.vatValue || "0"}%)`, '-', formatMoney(data?.vat || 0, data?.currency)],
+            [`NHIL/...(${ data?.covidVatValue?.toFixed(2) || "0"}%)`, '-', formatMoney(data?.covidVat, data?.currency)],
+            [`VAT(${ data?.vatValue?.toFixed(2) || "0"}%)`, '-', formatMoney(data?.vat || 0, data?.currency)],
         ],
         tableFooter: ['Total', '', formatMoney(data?.total, data?.currency)],
         // custom style for the table header
