@@ -1,6 +1,6 @@
 import axios from "axios";
-export const WUSUAA_API = "https://23df-102-212-163-17.ngrok-free.app/";
-// export const WUSUAA_API = "https://api.wusuaafrozenfoods.com/";
+// export const WUSUAA_API = "https://23df-102-212-163-17.ngrok-free.app/";
+export const WUSUAA_API = "https://api.wusuaafrozenfoods.com/";
 // export const WUSUAA_API = "https://staging.wusuaafrozenfoods.com/";
 
 export const doPost = async (url, payload) => {

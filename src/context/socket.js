@@ -1,35 +1,69 @@
-import { createContext } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { WUSUAA_API } from '../server';
 
-const AUTH_TOKEN = localStorage.getItem('USER_TOKEN') || null;
+export const SocketContext = createContext(null);
 
-const socket = io(WUSUAA_API, {
-    // cors: {
-    //     origin: ["*"],
-    //     handlePreflightRequest: (req, res) => {
-    //         res.wriiteHead(200, {
-    //             "Access-Control-Allow-Origin": "*",
-    //             "Access-Control-Allow-Methods": "GET,POST",
-    //             "Access-Control-Allow-Headers": "my-custom-header",
-    //             "Access-Control-Allow-Credentials": true,
-    //         });
-    //         res.end()
-    //     }
-    // },
-    auth: { authorization: `Bearer ${AUTH_TOKEN}` }
-});
+export const SocketContextProvider = ({ children }) => {
+  const [socket, setSocket] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('USER_TOKEN') || null);
 
-socket.on('connect', () => {
-    socket.emit('authenticate', { token: AUTH_TOKEN }).on('authenticated', () => {});
-});
+  // 👀 Watch for localStorage changes (in case of login/logout in same or other tab)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const updatedToken = localStorage.getItem('USER_TOKEN');
+      if (updatedToken !== token) {
+        console.log('🔁 Token changed, refreshing socket...');
+        setToken(updatedToken);
+      }
+    };
 
-socket.on('disconnect', () => {});
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [token]);
 
-const SocketContext = createContext(null);
+  // 🔌 Reconnect socket when token changes
+  useEffect(() => {
+    if (!token) {
+      console.log('⛔ No token, not connecting socket');
+      if (socket) socket.disconnect();
+      return;
+    }
 
-const SocketContextProvider = ({ children }) => {
-    return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
+    console.log('⚡ Connecting socket with new token...');
+    const newSocket = io(WUSUAA_API, {
+      auth: { authorization: `Bearer ${token}` },
+      transports: ['websocket'],
+    });
+
+    newSocket.on('connect', () => {
+      console.log('✅ Socket connected');
+      newSocket.emit('authenticate', { token });
+    });
+
+    newSocket.on('disconnect', () => {
+      console.log('❌ Socket disconnected');
+    });
+
+    setSocket(newSocket);
+
+    // Cleanup old socket when token changes or component unmounts
+    return () => {
+      console.log('🧹 Cleaning up socket...');
+      newSocket.disconnect();
+    };
+  }, [token]);
+
+  // ✅ Expose a manual refresh function
+  const refreshSocket = () => {
+    console.log('🔄 Manually refreshing socket...');
+    const newToken = localStorage.getItem('USER_TOKEN');
+    setToken(newToken);
+  };
+
+  return (
+    <SocketContext.Provider value={{ socket, refreshSocket }}>
+      {children}
+    </SocketContext.Provider>
+  );
 };
-
-export { SocketContext, SocketContextProvider };

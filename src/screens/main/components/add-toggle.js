@@ -70,7 +70,7 @@ export default function AddToggle({onClick}) {
     <NameInputModal
     email={name}
     setEmail={(value) => setName(value)}
-    handleSubmit={() => {newCart(); setVisible(false)}}
+    handleSubmit={() => {newCart(); setVisible(false); setName("")}}
     visible={visible}
     setVisible={setVisible}
     />

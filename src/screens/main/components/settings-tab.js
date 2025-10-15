@@ -13,7 +13,7 @@ import { firstLetterUppercase, formatMoney, generateReceipt } from '../../../uti
 import { SocketContext } from '../../../context/socket';
 import PayMethod from '../../../components/modals/pay-method';
 import { render, Printer, Text } from 'react-thermal-printer';
-import { changeSettingsTab, userState } from '../../../redux/slices/userSlice';
+import { changeSettingsTab, changeTab, userState } from '../../../redux/slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 // import { IpcRenderer } from 'electron'
 
@@ -51,6 +51,7 @@ function SettingsTab() {
 
   const logUserOut = () => {
     localStorage.clear()
+    dispatch(changeTab("home"))
     navigate("/login")
   }
 

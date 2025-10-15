@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useFormik } from 'formik'
 import logo from '../../assets/auth/big-logo.svg'
 import TextInput from '../../components/common/input'
@@ -10,10 +10,13 @@ import { userState } from '../../redux/slices/userSlice'
 import { LoginSchema } from '../../forms/schemas'
 import { LoginUser, getMe } from '../../redux/slices/userSlice'
 import { Button as AppButton } from '@mui/material';
+import { SocketContext } from '../../context/socket'
 
 function Login() {
 
   const dispatch = useAppDispatch()
+
+  const { refreshSocket } = useContext(SocketContext)
 
   const { loading } = useAppSelector(userState)
 
@@ -41,6 +44,7 @@ function Login() {
       if(login?.type === "user/loginUser/fulfilled" && login?.payload?.access_token){
           const userInfo = await dispatch(getMe())
           if(userInfo?.type === "user/me/fulfilled"){
+            refreshSocket();
             routeChange("/dashboard")
               // navigation.reset({
               //     index: 0,
@@ -53,6 +57,7 @@ function Login() {
           alert("Invalid login credentials!")
       }
     } catch (error) {
+      console.log(error)
       alert("Seems something went wrong!")
     }
   }
