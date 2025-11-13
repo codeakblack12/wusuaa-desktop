@@ -16,7 +16,7 @@
       "deleteAppDataOnUninstall": true
     },
     "win": {
-      "target": "nsis"
+      "target": "portable"
     },
     "linux": {
       "target": "deb"
